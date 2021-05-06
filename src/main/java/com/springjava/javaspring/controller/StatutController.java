@@ -3,10 +3,13 @@ package com.springjava.javaspring.controller;
 import com.springjava.javaspring.dao.StatutDao;
 import com.springjava.javaspring.model.Statut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -19,33 +22,42 @@ public class StatutController {
          this.statutDao = statutDao;
     }
 
-    @GetMapping("/admin/user/statut/{id}")
-    public Statut getStatuts(@PathVariable int id){
+    @GetMapping("/user/statut/{id}")
+    public ResponseEntity<Statut> getStatuts(@PathVariable int id){
 
-        return statutDao.findById(id).orElse(null);
+        Optional<Statut> statut = statutDao.findById(id);
+
+        if(statut.isPresent()){
+            return ResponseEntity.ok(statut.get());
+
+        }else{
+            return ResponseEntity.noContent().build();
+        }
     }
 
-    @GetMapping("/admin/user/statuts")
-    public List<Statut> getStatuts(){
+    @GetMapping("/user/statuts")
+    public ResponseEntity<List<Statut>> getStatuts(){
 
-      List<Statut> listStatut = statutDao.findAll() ;
-
-        return listStatut;
+        return ResponseEntity.ok(statutDao.findAll());
     }
 
-    @PostMapping("/admin/user/statut")
-    public boolean addStatut (@RequestBody Statut statut) {
+    @PostMapping("/admin/statut")
+    public ResponseEntity<String> addStatut (@RequestBody Statut statut) {
 
-         statutDao.save(statut);
+        statut =statutDao.saveAndFlush(statut);
 
-        return true;
+        return ResponseEntity.created(URI.create("/user/statut/" + statut.getId())).build();
     }
 
     @DeleteMapping("/statut/{id}")
-    public boolean deleteStatut (@PathVariable int id) {
+    public ResponseEntity<Integer> deleteStatut (@PathVariable int id) {
 
-         statutDao.deleteById(id);
-        return true;
+         if(statutDao.existsById(id)){
+             statutDao.deleteById(id);
+             return ResponseEntity.ok(id);
+         }else{
+             return ResponseEntity.noContent().build() ;
+         }
     }
 
 

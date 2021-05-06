@@ -15,9 +15,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>javaspring</name>
 	<description>Demo project for Spring Boot</description>
+
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,11 +47,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 			<version>2.4.4</version>
 		</dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
@@ -68,9 +72,58 @@
 			<version>2.3.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<version>5.4.5</version>
+			<scope>test</scope>
+		</dependency>
+
+
 	</dependencies>
 
+<profiles>
+	<profile>
+		<id>developpeur</id>
+		<properties>
+			<server_port>8080</server_port>
+			<database_host>localhost</database_host>
+			<database_port>3306</database_port>
+			<database_name>devlog2021</database_name>
+			<database_username>root</database_username>
+			<database_password>Kaylas570709!+</database_password>
+			<jwt_secret>ludo123</jwt_secret>
+		</properties>
+	</profile>
+	<profile>
+
+
+		<id>test_unitaire</id>
+		<properties>
+			<server_port>8080</server_port>
+			<database_host>localhost</database_host>
+			<database_port>3306</database_port>
+			<database_name>devlog2021Test</database_name>
+			<database_username>root</database_username>
+			<database_password>Kaylas570709!+</database_password>
+			<jwt_secret>ludo123</jwt_secret>
+		</properties>
+	</profile>
+</profiles>
+
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.springjava.javaspring.view.JsonViewCustom;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,14 +17,11 @@ public class Utilisateur {
     @JsonView({JsonViewCustom.VueUtilisateur.class,JsonViewCustom.VueCompetence.class})
     private int id;
 
-
     @Column(nullable = false, length = 50)
     @JsonView({JsonViewCustom.VueUtilisateur.class,JsonViewCustom.VueCompetence.class})
     private String login;
 
-
     private String password;
-
 
     @ManyToOne
     @JsonView({JsonViewCustom.VueUtilisateur.class})
@@ -35,7 +33,7 @@ public class Utilisateur {
             name = "utilisateur_role",
             joinColumns = @JoinColumn( name ="utilisateur_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn( name =  "role_id",referencedColumnName = "id"))
-    private List<Role> listeRole;
+    private List<Role> listeRole = new ArrayList<>();
 
     @ManyToMany
     @JsonView({JsonViewCustom.VueUtilisateur.class})
@@ -45,7 +43,7 @@ public class Utilisateur {
             inverseJoinColumns = @JoinColumn( name =  "competence_id",referencedColumnName = "id"))
 
 
-    private List<Competence> listeCompetence;
+    private List<Competence> listeCompetence = new ArrayList<>();
 
     public String getLogin() {
         return login;
